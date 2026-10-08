@@ -100,7 +100,7 @@ func (t *Transport) toWASIRequest(req *http.Request) (*types.Request, error) {
 		body = witTypes.Some(rx)
 		go func() {
 			// For client requests, the Transport is responsible for closing the body.
-			defer req.Body.Close()
+			defer func() { _ = req.Body.Close() }()
 			defer writeTrailers(trailersTx, req.Trailer)
 			defer tx.Drop()
 

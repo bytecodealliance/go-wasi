@@ -57,7 +57,7 @@ func wasiHandle(request *types.Request) witTypes.Result[*types.Response, types.E
 			)
 			return
 		}
-		defer req.Body.Close()
+		defer func() { _ = req.Body.Close() }()
 
 		handlerFn(res, req)
 

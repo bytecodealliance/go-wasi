@@ -46,7 +46,7 @@ func wasiToHTTPRequest(ir *types.Request) (*http.Request, error) {
 
 	req, err := http.NewRequest(method, fmt.Sprintf("%s://%s%s", scheme, authority, pathWithQuery), body)
 	if err != nil {
-		body.Close()
+		_ = body.Close()
 		return nil, err
 	}
 
