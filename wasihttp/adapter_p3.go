@@ -33,7 +33,7 @@ func wasiToHTTPRequest(ir *types.Request) (*http.Request, error) {
 	}
 
 	scheme := "http"
-	if s := ir.GetScheme(); s.IsSome() && s.Some().Tag() == types.SchemeHttps {
+	if s := ir.GetScheme(); s.IsSome() && s.Some().Tag() == types.Scheme_Https {
 		scheme = "https"
 	}
 
@@ -60,25 +60,25 @@ func wasiToHTTPRequest(ir *types.Request) (*http.Request, error) {
 
 func methodToString(m types.Method) (string, error) {
 	switch m.Tag() {
-	case types.MethodConnect:
+	case types.Method_Connect:
 		return http.MethodConnect, nil
-	case types.MethodDelete:
+	case types.Method_Delete:
 		return http.MethodDelete, nil
-	case types.MethodGet:
+	case types.Method_Get:
 		return http.MethodGet, nil
-	case types.MethodHead:
+	case types.Method_Head:
 		return http.MethodHead, nil
-	case types.MethodOptions:
+	case types.Method_Options:
 		return http.MethodOptions, nil
-	case types.MethodPatch:
+	case types.Method_Patch:
 		return http.MethodPatch, nil
-	case types.MethodPost:
+	case types.Method_Post:
 		return http.MethodPost, nil
-	case types.MethodPut:
+	case types.Method_Put:
 		return http.MethodPut, nil
-	case types.MethodTrace:
+	case types.Method_Trace:
 		return http.MethodTrace, nil
-	case types.MethodOther:
+	case types.Method_Other:
 		return m.Other(), fmt.Errorf("unknown http method '%s'", m.Other())
 	default:
 		return "", fmt.Errorf("failed to convert http method")

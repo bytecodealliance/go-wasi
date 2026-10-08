@@ -11,15 +11,15 @@ import (
 
 func headerErrorString(err types.HeaderError) string {
 	switch err.Tag() {
-	case types.HeaderErrorInvalidSyntax:
+	case types.HeaderError_InvalidSyntax:
 		return "invalid syntax"
-	case types.HeaderErrorForbidden:
+	case types.HeaderError_Forbidden:
 		return "forbidden header"
-	case types.HeaderErrorImmutable:
+	case types.HeaderError_Immutable:
 		return "immutable header fields"
-	case types.HeaderErrorSizeExceeded:
+	case types.HeaderError_SizeExceeded:
 		return "size exceeded"
-	case types.HeaderErrorOther:
+	case types.HeaderError_Other:
 		if v := err.Other(); v.IsSome() {
 			return v.Some()
 		}
@@ -31,9 +31,9 @@ func headerErrorString(err types.HeaderError) string {
 
 func errorCodeString(code types.ErrorCode) string {
 	switch code.Tag() {
-	case types.ErrorCodeDnsTimeout:
+	case types.ErrorCode_DnsTimeout:
 		return "DNS timeout"
-	case types.ErrorCodeDnsError:
+	case types.ErrorCode_DnsError:
 		p := code.DnsError()
 		var parts []string
 		if p.Rcode.IsSome() {
@@ -46,31 +46,31 @@ func errorCodeString(code types.ErrorCode) string {
 			return "DNS error"
 		}
 		return "DNS error (" + strings.Join(parts, ", ") + ")"
-	case types.ErrorCodeDestinationNotFound:
+	case types.ErrorCode_DestinationNotFound:
 		return "destination not found"
-	case types.ErrorCodeDestinationUnavailable:
+	case types.ErrorCode_DestinationUnavailable:
 		return "destination unavailable"
-	case types.ErrorCodeDestinationIpProhibited:
+	case types.ErrorCode_DestinationIpProhibited:
 		return "destination IP prohibited"
-	case types.ErrorCodeDestinationIpUnroutable:
+	case types.ErrorCode_DestinationIpUnroutable:
 		return "destination IP unroutable"
-	case types.ErrorCodeConnectionRefused:
+	case types.ErrorCode_ConnectionRefused:
 		return "connection refused"
-	case types.ErrorCodeConnectionTerminated:
+	case types.ErrorCode_ConnectionTerminated:
 		return "connection terminated"
-	case types.ErrorCodeConnectionTimeout:
+	case types.ErrorCode_ConnectionTimeout:
 		return "connection timeout"
-	case types.ErrorCodeConnectionReadTimeout:
+	case types.ErrorCode_ConnectionReadTimeout:
 		return "connection read timeout"
-	case types.ErrorCodeConnectionWriteTimeout:
+	case types.ErrorCode_ConnectionWriteTimeout:
 		return "connection write timeout"
-	case types.ErrorCodeConnectionLimitReached:
+	case types.ErrorCode_ConnectionLimitReached:
 		return "connection limit reached"
-	case types.ErrorCodeTlsProtocolError:
+	case types.ErrorCode_TlsProtocolError:
 		return "TLS protocol error"
-	case types.ErrorCodeTlsCertificateError:
+	case types.ErrorCode_TlsCertificateError:
 		return "TLS certificate error"
-	case types.ErrorCodeTlsAlertReceived:
+	case types.ErrorCode_TlsAlertReceived:
 		p := code.TlsAlertReceived()
 		var parts []string
 		if p.AlertId.IsSome() {
@@ -83,80 +83,80 @@ func errorCodeString(code types.ErrorCode) string {
 			return "TLS alert received"
 		}
 		return "TLS alert received (" + strings.Join(parts, ", ") + ")"
-	case types.ErrorCodeHttpRequestDenied:
+	case types.ErrorCode_HttpRequestDenied:
 		return "HTTP request denied"
-	case types.ErrorCodeHttpRequestLengthRequired:
+	case types.ErrorCode_HttpRequestLengthRequired:
 		return "HTTP request length required"
-	case types.ErrorCodeHttpRequestBodySize:
+	case types.ErrorCode_HttpRequestBodySize:
 		if v := code.HttpRequestBodySize(); v.IsSome() {
 			return fmt.Sprintf("HTTP request body size: %d", v.Some())
 		}
 		return "HTTP request body size"
-	case types.ErrorCodeHttpRequestMethodInvalid:
+	case types.ErrorCode_HttpRequestMethodInvalid:
 		return "HTTP request method invalid"
-	case types.ErrorCodeHttpRequestUriInvalid:
+	case types.ErrorCode_HttpRequestUriInvalid:
 		return "HTTP request URI invalid"
-	case types.ErrorCodeHttpRequestUriTooLong:
+	case types.ErrorCode_HttpRequestUriTooLong:
 		return "HTTP request URI too long"
-	case types.ErrorCodeHttpRequestHeaderSectionSize:
+	case types.ErrorCode_HttpRequestHeaderSectionSize:
 		if v := code.HttpRequestHeaderSectionSize(); v.IsSome() {
 			return fmt.Sprintf("HTTP request header section size: %d", v.Some())
 		}
 		return "HTTP request header section size"
-	case types.ErrorCodeHttpRequestHeaderSize:
+	case types.ErrorCode_HttpRequestHeaderSize:
 		if v := code.HttpRequestHeaderSize(); v.IsSome() {
 			return "HTTP request header size " + fieldSizeString(v.Some())
 		}
 		return "HTTP request header size"
-	case types.ErrorCodeHttpRequestTrailerSectionSize:
+	case types.ErrorCode_HttpRequestTrailerSectionSize:
 		if v := code.HttpRequestTrailerSectionSize(); v.IsSome() {
 			return fmt.Sprintf("HTTP request trailer section size: %d", v.Some())
 		}
 		return "HTTP request trailer section size"
-	case types.ErrorCodeHttpRequestTrailerSize:
+	case types.ErrorCode_HttpRequestTrailerSize:
 		return "HTTP request trailer size " + fieldSizeString(code.HttpRequestTrailerSize())
-	case types.ErrorCodeHttpResponseIncomplete:
+	case types.ErrorCode_HttpResponseIncomplete:
 		return "HTTP response incomplete"
-	case types.ErrorCodeHttpResponseHeaderSectionSize:
+	case types.ErrorCode_HttpResponseHeaderSectionSize:
 		if v := code.HttpResponseHeaderSectionSize(); v.IsSome() {
 			return fmt.Sprintf("HTTP response header section size: %d", v.Some())
 		}
 		return "HTTP response header section size"
-	case types.ErrorCodeHttpResponseHeaderSize:
+	case types.ErrorCode_HttpResponseHeaderSize:
 		return "HTTP response header size " + fieldSizeString(code.HttpResponseHeaderSize())
-	case types.ErrorCodeHttpResponseBodySize:
+	case types.ErrorCode_HttpResponseBodySize:
 		if v := code.HttpResponseBodySize(); v.IsSome() {
 			return fmt.Sprintf("HTTP response body size: %d", v.Some())
 		}
 		return "HTTP response body size"
-	case types.ErrorCodeHttpResponseTrailerSectionSize:
+	case types.ErrorCode_HttpResponseTrailerSectionSize:
 		if v := code.HttpResponseTrailerSectionSize(); v.IsSome() {
 			return fmt.Sprintf("HTTP response trailer section size: %d", v.Some())
 		}
 		return "HTTP response trailer section size"
-	case types.ErrorCodeHttpResponseTrailerSize:
+	case types.ErrorCode_HttpResponseTrailerSize:
 		return "HTTP response trailer size " + fieldSizeString(code.HttpResponseTrailerSize())
-	case types.ErrorCodeHttpResponseTransferCoding:
+	case types.ErrorCode_HttpResponseTransferCoding:
 		if v := code.HttpResponseTransferCoding(); v.IsSome() {
 			return fmt.Sprintf("HTTP response transfer coding: %s", v.Some())
 		}
 		return "HTTP response transfer coding"
-	case types.ErrorCodeHttpResponseContentCoding:
+	case types.ErrorCode_HttpResponseContentCoding:
 		if v := code.HttpResponseContentCoding(); v.IsSome() {
 			return fmt.Sprintf("HTTP response content coding: %s", v.Some())
 		}
 		return "HTTP response content coding"
-	case types.ErrorCodeHttpResponseTimeout:
+	case types.ErrorCode_HttpResponseTimeout:
 		return "HTTP response timeout"
-	case types.ErrorCodeHttpUpgradeFailed:
+	case types.ErrorCode_HttpUpgradeFailed:
 		return "HTTP upgrade failed"
-	case types.ErrorCodeHttpProtocolError:
+	case types.ErrorCode_HttpProtocolError:
 		return "HTTP protocol error"
-	case types.ErrorCodeLoopDetected:
+	case types.ErrorCode_LoopDetected:
 		return "loop detected"
-	case types.ErrorCodeConfigurationError:
+	case types.ErrorCode_ConfigurationError:
 		return "configuration error"
-	case types.ErrorCodeInternalError:
+	case types.ErrorCode_InternalError:
 		if v := code.InternalError(); v.IsSome() {
 			return "internal error: " + v.Some()
 		}
