@@ -24,3 +24,4 @@ jobs:
           install-only: true
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - run: just lint
+      - run: just build
