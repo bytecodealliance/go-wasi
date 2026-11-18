@@ -6,7 +6,6 @@ package wasihttp
 
 import (
 	"fmt"
-	"io"
 	"net/http"
 	"sync"
 
@@ -49,18 +48,8 @@ func (row *responseOutparamWriter) Write(buf []byte) (int, error) {
 		return 0, row.headerErr
 	}
 
-	writeResult := row.stream.Write(buf)
-	if writeResult.IsErr() {
-		if writeResult.Err().Tag() == streams.StreamError_Closed {
-			return 0, io.EOF
-		}
-
-		return 0, fmt.Errorf("failed to write to response body's stream: %s", writeResult.Err().LastOperationFailed().ToDebugString())
-	}
-
-	row.stream.BlockingFlush()
-
-	return len(buf), nil
+	body := outgoingBody{stream: row.stream}
+	return body.Write(buf)
 }
 
 // WriteHeader sends an HTTP response header with the provided
